@@ -16,14 +16,14 @@ def plot(prefix):
 		n.append(2**bits)
 		x.append(1-coverage/features)
 		c.append(features-coverage)
-	
+
 	fig, ax1 = plt.subplots()
 	ax1.set_yscale('log', basey=2)
 	ax1.plot(x, n, 'b-')
 	ax1.set_xlabel('% Collisions')
 	ax1.set_ylabel('Hash Size', color='b')
 	ax1.tick_params('y', colors='b')
-	
+
 	data = csv.reader(open(prefix+'_hash_log.csv'), delimiter=' ')
 	l = []
 	for row in data:
@@ -56,3 +56,4 @@ def plot(prefix):
 
 plot('avazu')
 plot('booking')
+plot('criteo')
