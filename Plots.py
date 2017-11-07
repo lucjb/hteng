@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 import csv
 import seaborn
@@ -9,6 +10,8 @@ def e_collisions(k, N):
 
 def plot_model():
 	fig = plt.figure(figsize=(12,4))
+	size = fig.get_size_inches()*fig.dpi # size in pixels
+	print size, fig.get_size_inches(), fig.dpi
 	for i, prefix in enumerate(['avazu', 'booking', 'criteo']):
 		ax = fig.add_subplot(1,3,i+1)
 
@@ -33,10 +36,14 @@ def plot_model():
 		ax.plot(c,p(c),'r-', label='Linear Fit')
 		if i == 0:
 			ax.legend(loc=2)
-		ax.set_title(prefix)
+		ax.set_title(prefix, fontsize=16)
+		ax.xaxis.label.set_size(16)
+		plt.setp(ax.get_xticklabels(),fontsize=16, rotation=45)
+                plt.setp(ax.get_yticklabels(),fontsize=16)
+
 	        #plt.annotate('y=%.6fx+(%.6f)'%(z[0],z[1]), xy=(0,0), xycoords='data')
 	plt.tight_layout()
-        plt.savefig('article/'+prefix+'_model_fit.png')
+        plt.savefig('article/model_fit.png')
 
 
 def plot_impact(prefix):
