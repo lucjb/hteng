@@ -26,7 +26,7 @@ def avg_collisions(k, N):
 	for _ in range(100):
 	        x.append(sim_collisions(k, N))
 	return sum(x)/float(len(x))
-
+'''
 for b in range(18,30):
 	print b, e_collisions(39752014, 2**b)
 
@@ -41,16 +41,14 @@ for k in range(1, 1000, 100):
 		print s, e
 plt.scatter(sim, calc)
 plt.show()
-
+'''
 
 solutions = [0]
 
 
 
-r = range(1, 10000, 100)
+r = range(1, 1000, 100)
 for k in r:
-	if k == 0:
-		continue
 	N = k
 	colisions=k
 	while colisions>0.1:
