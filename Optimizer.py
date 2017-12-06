@@ -7,11 +7,17 @@ from decimal import Decimal
 def e_collisions(k,N):
         N = Decimal(N)
         k = Decimal(k)
-        c=k-N*(1-(1-1/N)**k)
+	c = k*(1-(1-1/N)**(k-1))
+        #c=k-N*(1-(1-1/N)**k)
 	return c
 
 def compute(k, x):
 	return (k**2)/(2*x)
+
+def exact(k, c):
+        k = Decimal(k)
+	c = Decimal(c)
+	return float(-1/((1-c/k)**(1/(k-1))-1))
 
 def bisect(a, b, k, x):
 	while a<b:
@@ -43,9 +49,9 @@ for i,g in enumerate([1, 2, 3]):
         solutions, w = [], []
         for k in r:
                 sol = bisect(k, MAX_N, k, g)
-                solutions.append(sol)
-		w.append(compute(k,g))
-                print k, sol, e_collisions(k, sol), e_collisions(k, sol-1), e_collisions(k, compute(k,g))
+                solutions.append(exact(k,g))
+		w.append(exact(k,g))
+                print k, sol, e_collisions(k, sol), e_collisions(k, sol-1), e_collisions(k, exact(k,g))
         z = np.polyfit(r, solutions, 2)
         p = np.poly1d(z)
         plt.plot(r, solutions, 'o', label=str(g)+' collisions')

@@ -5,7 +5,8 @@ import seaborn
 import numpy as np
 
 def e_collisions(k, N):
-	c =  k-N*(1.-((N-1.)/N)**k)
+	c = k*(1-(1-1./N)**(k-1))	
+	#c =  k-N*(1.-((N-1.)/N)**k)
 	return c
 
 def plot_model():
@@ -19,9 +20,9 @@ def plot_model():
 	        n, c = [], []
 	        features = None
 	        for row in data:
-	                bits, features, coverage = map(float, row)
+	                bits, features, collisions = map(float, row)
 	                n.append(2**bits)
-	                c.append(features-coverage)
+	                c.append(collisions)
 	        ec = []
 	        for ni in n:
 	                ec.append(e_collisions(features, ni))
@@ -51,10 +52,10 @@ def plot_impact(prefix):
 	x, n, c = [], [], []
 	features = None
 	for row in data:
-		bits, features, coverage = map(float, row)
+		bits, features, collisions = map(float, row)
 		n.append(2**bits)
-		x.append(1-coverage/features)
-		c.append(features-coverage)
+		x.append(collisions/features)
+		c.append(collisions)
 
 	fig, ax1 = plt.subplots()
 	ax1.set_yscale('log', basey=2)
