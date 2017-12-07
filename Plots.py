@@ -5,7 +5,7 @@ import seaborn
 import numpy as np
 
 def e_collisions(k, N):
-	c = k*(1-(1-1./N)**(k-1))	
+	c = k*(1-(1-1./N)**(k-1))
 	#c =  k-N*(1.-((N-1.)/N)**k)
 	return c
 
@@ -19,10 +19,15 @@ def plot_model():
 	        data = csv.reader(open(prefix+'_col_log.csv'), delimiter=' ')
 	        n, c = [], []
 	        features = None
+		all_collided_counter = 0
 	        for row in data:
 	                bits, features, collisions = map(float, row)
+			if collisions==features:
+				all_collided_counter+=1
 	                n.append(2**bits)
 	                c.append(collisions)
+		n = n[all_collided_counter-1:]
+		c = c[all_collided_counter-1:]
 	        ec = []
 	        for ni in n:
 	                ec.append(e_collisions(features, ni))
@@ -49,26 +54,32 @@ def plot_model():
 
 def plot_impact(prefix):
 	data = csv.reader(open(prefix+'_col_log.csv'), delimiter=' ')
+        loss_data = csv.reader(open(prefix+'_hash_log.csv'), delimiter=' ')
+        l = []
+	g = 0
 	x, n, c = [], [], []
 	features = None
 	for row in data:
+		loss_row = loss_data.next()
+                bits, loss = map(float, loss_row)
 		bits, features, collisions = map(float, row)
+		if collisions == features:
+			g+=1
+		l.append(loss)
 		n.append(2**bits)
 		x.append(collisions/features)
 		c.append(collisions)
-
+	
+	x = x[g-1:]
+	l = l[g-1:]
+	n = n[g-1:]
+	c = c[g-1:]
 	fig, ax1 = plt.subplots()
 	ax1.set_yscale('log', basey=2)
 	ax1.plot(x, n, 'bo-')
 	ax1.set_xlabel('% Collisions')
 	ax1.set_ylabel('Hash Size (n)', color='b')
 	ax1.tick_params('y', colors='b')
-
-	data = csv.reader(open(prefix+'_hash_log.csv'), delimiter=' ')
-	l = []
-	for row in data:
-		bits, loss = map(float, row)
-		l.append(loss)
 
 	ax2 = ax1.twinx()
 	ax2.plot(x, l, 'ro-')
