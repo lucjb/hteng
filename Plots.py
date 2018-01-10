@@ -6,7 +6,6 @@ import numpy as np
 
 def e_collisions(k, N):
 	c = k*(1-(1-1./N)**(k-1))
-	#c =  k-N*(1.-((N-1.)/N)**k)
 	return c
 
 def plot_model():
@@ -46,8 +45,6 @@ def plot_model():
 		ax.xaxis.label.set_size(16)
 		plt.setp(ax.get_xticklabels(),fontsize=16, rotation=45)
                 plt.setp(ax.get_yticklabels(),fontsize=16)
-
-	        #plt.annotate('y=%.6fx+(%.6f)'%(z[0],z[1]), xy=(0,0), xycoords='data')
 	plt.tight_layout()
         plt.savefig('article/model_fit.png')
 
